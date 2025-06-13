@@ -9,16 +9,38 @@ export function AuthProvider({ children }) {
   const [location, setLocation] = useState("GATE");
 
   // TODO: signup
-  const signup = async () => {
-    const response = await fetch(`${API}/authenticate`), {method: `POST`, headers: {`Content-Type`: `application/json`}, body: JSON.stringify{{username: userNameInput}}}
+  const signup = async (username) => {
+    const response = await fetch(`${API}/signup`) {
+      method: `POST`, 
+      headers: {
+        `Content-Type`: `application/json`
+      }, 
+      body: JSON.stringify{{ 
+        username: userNameInput }}}
+
+ const responseObj = await response.json();
+ setToken(responseObj.token)
+ setLocation(`TabLet`)
+  }
+
+  // TODO: authenticate
+
+const authenticate = async () => {
+    const response = await fetch(`${API}/authentication`) {
+      method: `GET`, 
+      headers: {
+        `Content-Type`: `application/json`
+      }, 
+     `Authorization`: `Bearer ${token}`}}
+
  const responseObj = await response.json();
  setToken(responseObj.token)
  setLocation(`TUNNEL`)
   }
 
-  // TODO: authenticate
 
-  const value = { location };
+
+  const value = { location, signup, authenticate};
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
